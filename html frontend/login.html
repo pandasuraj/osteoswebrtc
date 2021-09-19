@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./assets/css/styles.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Host Meeting</title>
+    <script src='https://use.fontawesome.com/3bd7769ce1.js'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src='https://8x8.vc/external_api.js'></script>
+</head>
+
+<script type="text/javascript">
+
+    $(document).ready();
+    var user_name = null;
+    var password = null;
+    var room_name = null
+    var result1 = null;
+    var initIframeAPI;
+    var baseUrl = 'http://127.0.0.1:5501/participants.html';
+    const generate = function () {
+        $.ajax({
+            url: "http://127.0.0.1:5000/create/room",
+            type: "POST",
+            headers: { "token": "surajOsteoes" },
+            success: function (result) {
+                console.log(result)
+                var data = result.data
+                user_name = data.user_name;
+                password = data.password;
+                room_name = data.room_name;
+                window.localStorage.setItem('user_name', user_name);
+                window.localStorage.setItem('password', password);
+                window.localStorage.setItem('room_name', room_name);
+                result1 = result.data;
+
+                let userElem = document.getElementById('username');
+                let passElem = document.getElementById('password');
+                userElem.value = user_name;
+                passElem.value = password;
+                alert('Credentials Generated Sucessfully');
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        })
+        {
+            var x = document.getElementById("myButton1");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+    }
+</script>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a href="https://osteos.io/">
+                <img src="assets/images/footerlogo.png" class="footer-logo" width="100" height="60" alt=""></a>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            </div>
+        </nav>
+    </header>
+
+
+    <div class="container-fluid ps-md-0">
+        <div class="row g-0">
+            <div class="d-none d-md-flex col-md-4 col-lg-6">
+                <img src="https://static.vecteezy.com/system/resources/previews/002/710/265/original/profile-login-style-vector.jpg"
+                    alt="" class="img">
+            </div>
+            <div class="col-md-8 col-lg-6">
+                <div class="login d-flex align-items-center py-5">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-9 col-lg-8 mx-auto">
+                                <h3 class="login-heading mb-4"><b>Welcome to Osteos Consulting Room </b></h3>
+                                <p>Generate Credentials By Pressing Generate Button</p>
+                                <!-- Sign In Form -->
+                                <form>
+                                    <div class="form-floating mb-3">
+                                        <input type="email" class="form-control" id="username"
+                                            placeholder="name@example.com">
+                                        <label for="floatingInput">Email address</label>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input type="password" class="form-control" id="password"
+                                            placeholder="Password">
+                                        <label for="floatingPassword">Password</label>
+                                    </div>
+                                    <div class="d-grid">
+                                        <input onclick="generate()"
+                                            class="btn btn-lg btn-primary btn-login text-uppercase fw-bold mb-2"
+                                            id="myButton1" type="button" value="Generate"></input>
+                                        <input onclick="window.location.href = './meeting.html'"
+                                            class="btn btn-lg btn-primary btn-login text-uppercase fw-bold mb-2"
+                                            id="myButton1" type="button" value="Login">
+                                        </input>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-container">
+        <footer class="footer">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="footer-main">
+                        <div class="row">
+                            <div class="col-sm">
+                                <p class="about">
+                                    <span>
+                                        Osteos (India) Private
+                                        Limited © 2021
+                                    </span>
+                                    Please do Visit Our Social
+                                    Handles
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm">
+                                <div class="icons">
+
+                                    <a href='https://www.facebook.com/osteosdigital'> <i class="fa fa-facebook"></i></a>
+
+                                    <a href='https://instagram.com/osteosdigitalhealthcare?igshid=198dh0t7sgdrh'>
+                                        <i class="fa fa-instagram"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="footer-main">
+                        <div class="row">
+                            <div class="col">
+                                <div class="locationMarker">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="locContent">
+                                                <i class="fa fa-map-marker"></i>
+                                                <p class="address">
+                                                    LIG
+                                                    117,Mahantesh
+                                                    Nagar,
+                                                    <br />
+                                                    Belgaum-590016,
+                                                    <br />
+                                                    Karnataka
+                                                    State,India
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="locContent">
+                                                <i class="fa fa-phone"></i>
+                                                <p class="contact">
+                                                    (+91) 831
+                                                    245 3938
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="locContent">
+                                                <i class="fa fa-envelope "></i>
+                                                <p class="contact">
+                                                    info@osteos.io
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="footer-main">
+                        <div class="row">
+                            <a class="col">
+                                <a href="https://osteos.io/">
+                                    <img src="assets/images/footerlogo.png" class="footer-logo" width="200" height="90"
+                                        alt=""></a>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,17 @@
+{
+    "token": "surajOsteoes",
+    "db": {
+            "mysql": {            
+            "host": "localhost",
+            "port": "3306",
+            "database": "user",
+            "user": "root",
+            "password": null
+        }
+    },
+    "jitsi": {
+        "key": "vpaas-magic-cookie-55fd1b15824a4e1d99684d2aa5a7849d",
+        "kid": "vpaas-magic-cookie-55fd1b15824a4e1d99684d2aa5a7849d/9b8840"
+    },
+    "privateKey": ""
+}

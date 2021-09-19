@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./assets/css/styles.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title> Join Meeting</title>
+    <script src='https://use.fontawesome.com/3bd7769ce1.js'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src='https://8x8.vc/external_api.js'></script>
+</head>
+
+<script type="text/javascript">
+    var roomName = '';
+
+    $(document).ready(function () {
+        const params = new URLSearchParams(window.location.search)
+        roomName = params.get('roomName');
+        console.log(roomName);
+        const linkElem = document.getElementById('roomName');
+        linkElem.value = roomName;
+    });
+    const validator = function () {
+        let email = document.getElementById('email').value;
+        $.ajax({
+            url: "http://127.0.0.1:5000/generate_jwt",
+            type: "POST",
+            'contentType': 'application/json',
+            data: JSON.stringify({
+                "email": email,
+                "roomid": roomName,
+            }),
+            success: function (result) {
+                console.log(result);
+                const token = result.token[0];
+                const api = new JitsiMeetExternalAPI("8x8.vc/vpaas-magic-cookie-55fd1b15824a4e1d99684d2aa5a7849d/", {
+                    roomName: roomName,
+                    parentNode: document.querySelector('#jaas-container'),
+                    jwt: token,
+                    display_capture: true,
+                    width: 1100,
+                    height: 600,
+
+                });
+                api.executeCommand('overwriteConfig',
+                    {
+                        toolbarButtons: [
+                            'camera',
+                            'chat',
+                            'closedcaptions',
+                            'desktop',
+                            'download',
+                            'embedmeeting',
+                            'etherpad',
+                            'feedback',
+                            'filmstrip',
+                            'fullscreen',
+                            'hangup',
+                            'help',
+                            'livestreaming',
+                            'microphone',
+                            'mute-everyone',
+                            'mute-video-everyone',
+                            'participants-pane',
+                            'profile',
+                            'raisehand',
+                            'recording',
+                            'security',
+                            'select-background',
+                            'settings',
+                            'shareaudio',
+                            'sharedvideo',
+                            'shortcuts',
+                            'stats',
+                            'tileview',
+                            'toggle-camera',
+                            'videoquality',
+                            '__end'
+                        ],
+                    }
+                );
+                api.addListener('readyToClose', () => {
+                    window.location.reload(true)
+                    window.location.replace("https://osteos.io/")
+
+                })
+
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        })
+
+    }
+
+</script>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a href="https://osteos.io/">
+                <img src="assets/images/footerlogo.png" class="footer-logo" width="100" height="60" alt=""></a>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            </div>
+        </nav>
+    </header>
+
+    <div class="container-fluid ps-md-0">
+        <div class="row g-0">
+            <div class="d-none d-md-flex col-md-4 col-lg-6">
+                <img src="./assets/images/join1.jpg" alt="" class="img">
+            </div>
+            <div class="col-md-8 col-lg-6">
+                <div class="login d-flex align-items-center py-5">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-9 col-lg-8 mx-auto">
+                                <h3 class="login-heading mb-4"><b>Welcome to Osteos Consulting Room </b></h3>
+                                <p>To Join the consulting room please click on the below Join button </p>
+
+                                <input class="form-control " type="text" id="email" placeholder="user@user.com">
+                                <br>
+                                <input type="text" class="form-control" name="" id="roomName">
+
+                                <div class="host-parent">
+                                    <button onclick="validator()" class="host-button btn-get-started"
+                                        data-toggle="modal" data-target="#jitsi-meets-modal">Join Consulting
+                                        Room</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6">
+            <div class="row">
+                <div id="jaas-container"></div>
+            </div>
+        </div>
+        <div class="col-sm-3"></div>
+    </div>
+
+    <div class="footer-container">
+        <footer class="footer">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="footer-main">
+                        <div class="row">
+                            <div class="col-sm">
+                                <p class="about">
+                                    <span>
+                                        Osteos (India) Private
+                                        Limited © 2021
+                                    </span>
+                                    Please do Visit Our Social
+                                    Handles
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm">
+                                <div class="icons">
+
+                                    <a href='https://www.facebook.com/osteosdigital'> <i class="fa fa-facebook"></i></a>
+
+                                    <a href='https://instagram.com/osteosdigitalhealthcare?igshid=198dh0t7sgdrh'>
+                                        <i class="fa fa-instagram"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="footer-main">
+                        <div class="row">
+                            <div class="col">
+                                <div class="locationMarker">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="locContent">
+                                                <i class="fa fa-map-marker"></i>
+                                                <p class="address">
+                                                    LIG
+                                                    117,Mahantesh
+                                                    Nagar,
+                                                    <br />
+                                                    Belgaum-590016,
+                                                    <br />
+                                                    Karnataka
+                                                    State,India
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="locContent">
+                                                <i class="fa fa-phone"></i>
+                                                <p class="contact">
+                                                    (+91) 831
+                                                    245 3938
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="locContent">
+                                                <i class="fa fa-envelope "></i>
+                                                <p class="contact">
+                                                    info@osteos.io
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="footer-main">
+                        <div class="row">
+                            <a class="col">
+                                <a href="https://osteos.io/">
+                                    <img src="assets/images/footerlogo.png" class="footer-logo" width="200" height="90"
+                                        alt=""></a>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+</body>
+
+</html>
